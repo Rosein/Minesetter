@@ -5,11 +5,30 @@ bool Game::checkFieldAt( int x, int y )
     if( board[ x ][ y ].second == IsChecked::No )
     {
         board[ x ][ y ].second = IsChecked::Yes;
+        if(  board[ x ][ y ].first == FieldState::Free && board[ x ][ y ].third == 0 )
+            checkFreeFieldsAround( x, y );
         return true;
     }
     return false;
 }
 
+void Game::checkFreeFieldsAround( int x, int y )
+{
+    for( int i = -1 ; i < 2; ++i )
+        for( int j = -1 ; j < 2; ++j )
+        {
+            // std::cout << "(" << x + i << ", " << y + j << ")" << std::endl;
+            if( isInBoard( x + i, y + j ) && ( i != 0 || j != 0 ) )
+                if( board[ x + i ][ y + j ].first == FieldState::Free && 
+                    board[ x + i ][ y + j ].second == IsChecked::No )
+                {
+                    board[ x + i ][ y + j ].second = IsChecked::Yes;
+                    printBoard();
+                    if ( board[ x + i ][ y + j ].third == 0 )
+                        checkFreeFieldsAround( x + i, y + j );
+                }
+        }
+}
 
 FieldState Game::getFieldStateAt( int x, int y )
 {
@@ -21,12 +40,45 @@ int Game::getBombCounterAt( int x, int y )
     return board[ x ][ y ].third;
 }
 
-void Game::SetBombAt( int x, int y )
+void Game::setBombAt( int x, int y )
 {
     board[ x ][ y ].first = FieldState::Bomb;
     increaseBombCountersAround( x, y );
 }
 
+void Game::setBombVector( CoordsOfBombs coords_of_bombs )
+{
+    for_each( coords_of_bombs.begin(), coords_of_bombs.end(), [&]( std::pair<int,int> coords )
+        {
+            if( isInBoard( coords.first, coords.second ) )
+                setBombAt( coords.first, coords.second );
+        });
+}
+
+char Game::printField( int x, int y )
+{
+    if( board[ x ][ y ].second == IsChecked::No )
+        return '*';
+    else if( board[ x ][ y ].first == FieldState::Bomb )
+        return '@';
+    else if( board[ x ][ y ].third == 0 )
+        return '.';
+    else
+        return board[ x ][ y ].third + 48;
+
+}
+
+void Game::printBoard()
+{
+    std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
+    for( int i = 0; i < board.size(); ++i )
+    {
+        for( int j = 0; j < board[ 0 ].size(); ++j )
+            std::cout << std::setw( 2 ) << printField( i , j );
+    std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
 
 Game::Game( int x, int y )
     : board( x, std::vector<Field>( y, { FieldState::Free, IsChecked::No } ) )
