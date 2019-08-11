@@ -11,8 +11,10 @@ protected:
 TEST_F( PrepareBoard, CheckFieldWithBomb )
 {
     game.setBombAt( 0, 0 );
+    EXPECT_EQ( game.getGameState(), GameState::InProgress );    
     EXPECT_TRUE( game.checkFieldAt( 0, 0 ) );
     EXPECT_EQ( game.getFieldStateAt( 0, 0 ), FieldState::Bomb );
+    EXPECT_EQ( game.getGameState(), GameState::Lose );
 }
 
 

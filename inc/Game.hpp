@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <chrono>
 #include <thread>
+#include <random>
 
 enum class FieldState
 {
@@ -45,6 +46,7 @@ public:
     int getBombCounterAt( int x, int y );
     void setBombAt( int x, int y );
     void setBombVector( CoordsOfBombs coords_of_bombs );
+    CoordsOfBombs generateRandomBombsN( int n );
     char printField( int x, int y );
     void printBoard();
     Game( int x = 10, int y = 10 );

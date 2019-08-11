@@ -73,6 +73,17 @@ void Game::setBombVector( CoordsOfBombs coords_of_bombs )
         });
 }
 
+CoordsOfBombs Game::generateRandomBombsN( int n )
+{
+    CoordsOfBombs random_coords( n );
+    std::for_each( random_coords.begin(), random_coords.end(), [&]( std::pair<int,int> & coords )
+                                                                {
+                                                                    coords.first = random() % board.size();
+                                                                    coords.second = random() % board[ 0 ].size();
+                                                                });
+    return random_coords;
+}
+
 char Game::printField( int x, int y )
 {
     if( board[ x ][ y ].second == IsChecked::No )
