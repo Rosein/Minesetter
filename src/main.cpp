@@ -3,6 +3,7 @@
 
 void play_minesweeper( int height, int width, int numb_bombs )
 {
+    std::srand(std::time(nullptr));
     Game game( height, width );
     game.setBombVector( game.generateRandomBombsN( numb_bombs ) );
     int x, y;

@@ -99,7 +99,7 @@ char Game::printField( int x, int y )
 
 void Game::printBoard()
 {
-    std::this_thread::sleep_for( std::chrono::milliseconds( 100 ) );
+    // std::this_thread::sleep_for( std::chrono::milliseconds( 100 ) );
     for( int i = 0; i < board.size(); ++i )
     {
         for( int j = 0; j < board[ 0 ].size(); ++j )

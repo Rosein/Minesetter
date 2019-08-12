@@ -3,7 +3,7 @@ TARGET = minesweeper
 TARGET_TEST = run_tests
 
 $(TARGET) : src/main.cpp obj/Game.o
-	$(CXX) src/main.cpp obj/Game.o -o build/$(TARGET) -lgtest -lpthread
+	$(CXX) src/main.cpp obj/Game.o -o build/$(TARGET)
 
 obj/Game.o : src/Game.cpp inc/Game.hpp
 	$(CXX) src/Game.cpp -c -o obj/Game.o
